@@ -293,15 +293,15 @@ network.host: <%= @ipaddress %>
 
 ################################## Discovery ##################################
 
-<%- if @unicast == false -%>
+<%- if @unicast_real == false -%>
 discovery.zen.ping.multicast.enabled: true
 discovery.zen.ping.multicast.address: <%= @ipaddress %>
 <%- else -%>
 <%- if is_master == true -%>
-<% @unicast.unshift(@fqdn) %>
-discovery.zen.ping.unicast.hosts: <%= @unicast.to_json %>
+<% @unicast_real.unshift(@fqdn) %>
+discovery.zen.ping.unicast.hosts: <%= @unicast_real.to_json %>
 <%- else -%>
-discovery.zen.ping.unicast.hosts: <%= @unicast.to_json %>
+discovery.zen.ping.unicast.hosts: <%= @unicast_real.to_json %>
 <% end %>
 <% end %>
 

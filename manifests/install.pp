@@ -26,16 +26,19 @@ class elasticsearch::install {
   $tmp_dir = "/tmp/elasticsearch-${elasticsearch::es_version}"
   $all_dirs = [ $elasticsearch::es_dir, $elasticsearch::es_conf_dir ]
   $own_dirs = [ $elasticsearch::es_log_dir, $elasticsearch::es_data_dir, $elasticsearch::es_work_dir, $elasticsearch::es_pid_dir, $elasticsearch::es_plugins_dir ]
+  $url = "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${elasticsearch::es_version}.tar.gz"
+
+  exec { 'download':
+    cwd     => '/tmp',
+    command => "/usr/bin/curl -O ${url}",
+    creates => $tar_path,
+    unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch && /usr/local/elasticsearch/bin/elasticsearch -v | /bin/grep -q '${elasticsearch::es_version}'",
+  }
 
   user { $elasticsearch::es_base:
     ensure => present,
     system => true,
     shell  => '/sbin/nologin',
-  }
-
-  file { $tar_path:
-    ensure => present,
-    source => "puppet:///modules/elasticsearch/${tar}",
   }
 
   file { $all_dirs:
@@ -46,7 +49,6 @@ class elasticsearch::install {
     ensure  => directory,
     owner   => $elasticsearch::es_base,
     group   => $elasticsearch::es_base,
-    require => User[$elasticsearch::es_base],
   }
 
   file { "${elasticsearch::es_dir}/data":
@@ -72,7 +74,7 @@ class elasticsearch::install {
   exec { 'unpack':
     command => "/bin/tar zxf ${tar_path} --overwrite --no-same-owner --no-same-permissions --strip-components=1 -C ${elasticsearch::es_dir}",
     unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch && /usr/local/elasticsearch/bin/elasticsearch -v | /bin/grep -q '${elasticsearch::es_version}'",
-    require => [ File[$tar_path], File[$all_dirs], File["${elasticsearch::es_dir}/config"] ],
+    require => [ Exec['download'], File[$all_dirs], File["${elasticsearch::es_dir}/config"] ],
   }
 }
 

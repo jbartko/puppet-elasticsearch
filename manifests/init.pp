@@ -98,6 +98,15 @@ class elasticsearch (
   $is_master      = $elasticsearch::params::is_master,
   $is_data        = $elasticsearch::params::is_data
 ) inherits elasticsearch::params {
+  # TODO require puppetlabs-stdlib
+  $unicast_real = $unicast ? {
+    'UNSET' => false,
+    default => $unicast,
+  }
+  if($unicast_real != false) {
+    validate_array($unicast_real)
+  }
+
   class{'elasticsearch::install': } ->
   class{'elasticsearch::config': } ~>
   class{'elasticsearch::service': } ->

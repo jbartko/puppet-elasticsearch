@@ -1,0 +1,94 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          elasticsearch
+# Required-Start:    $network
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      S 0 1 6
+# Short-Description: Starts elasticsearch
+# Description: Elasticsearch
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Pull in sysconfig settings
+[ -f /etc/sysconfig/elasticsearch ] && . /etc/sysconfig/elasticsearch
+
+ES_HOME=<%= @es_dir %>
+ES_USER=<%= @es_base %>
+
+DAEMON=${ES_HOME}/bin/elasticsearch
+NAME=elasticsearch
+PID_FILE=${PID_FILE:-/var/run/${NAME}/${NAME}.pid}
+LOCK_FILE=${LOCKFILE:-/var/lock/subsys/${NAME}}
+NFILES=${NFILES:-<%= @es_num_files %>}
+DELAY=20
+
+ES_PATH_LOG=${ES_PATH_LOG:-/var/log/${NAME}}
+ES_PATH_DATA=${ES_PATH_DATA:-${ES_HOME}/data}
+ES_PATH_WORK=${ES_PATH_WORK:-/tmp/${NAME}}
+ES_PATH_CONF=${ES_PATH_CONF:-${ES_HOME}/config}
+ES_PATH_PLUGINS=${ES_PATH_PLUGINS:-${ES_HOME}/plugins}
+ES_CONFIG=${ES_CONFIG:-${ES_PATH_CONF}/elasticsearch.yml}
+
+DAEMON_OPTS="-p ${PID_FILE} -Des.config=${ES_CONFIG} \
+    -Des.path.conf=${ES_PATH_CONF} \
+    -Des.path.home=${ES_HOME} \
+    -Des.path.logs=${ES_PATH_LOG} \
+    -Des.path.data=${ES_PATH_DATA} \
+    -Des.path.work=${ES_PATH_WORK}"
+
+# These environment variables are passed over.
+ES_HEAP_SIZE=${ES_HEAP_SIZE:-256m}
+ES_INCLUDE=${ES_INCLUDE:-${ES_HOME}/bin/elasticsearch.in.sh}
+
+start() {
+    if [[ -f $LOCK_FILE ]]; then
+        echo "${NAME} already running!" && return 9
+    fi
+    echo -n $"Starting ${NAME}: "
+    daemon --user=$ES_USER \
+        ES_HOME=$ES_HOME \
+        ES_INCLUDE=$ES_INCLUDE \
+        ES_HEAP_SIZE=$ES_HEAP_SIZE \
+        $DAEMON $DAEMON_OPTS
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $LOCK_FILE
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping ${NAME}: "
+    killproc -p ${PID_FILE} -d $DELAY $DAEMON
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && rm -f ${LOCK_FILE} ${PID_FILE}
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status -p ${PID_FILE} $DAEMON
+        RETVAL=$?
+        ;;
+    restart|force-reload)
+        stop
+        start
+        ;;
+    *)
+        N=/etc/init.d/${NAME}
+        echo "Usage: $N {start|stop|status|restart|force-reload}" >2
+        RETVAL=2
+        ;;
+esac
+
+exit $RETVAL
+

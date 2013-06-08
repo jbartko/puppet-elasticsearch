@@ -15,8 +15,6 @@
 # [*es_work_dir*]
 # [*es_num_files*]
 # [*es_memlock*]
-# [*es_min_mem*]
-# [*es_max_mem*]
 # [*alloc_aware*]
 # [*datacenter*]
 # [*is_master*]
@@ -36,7 +34,7 @@
 # Copyright 2013 John Bartko, for use by Texas State University-San Marcos
 #
 class elasticsearch::params {
-  $java_package   = 'java-1.6.0-openjdk'
+  $java_package   = 'java-1.7.0-openjdk'
   $es_base        = 'elasticsearch'
   $es_version     = '0.90.0'
   $es_dir         = "/usr/local/${es_base}"

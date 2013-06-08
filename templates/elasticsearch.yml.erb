@@ -297,7 +297,7 @@ network.host: <%= @ipaddress %>
 discovery.zen.ping.multicast.enabled: true
 discovery.zen.ping.multicast.address: <%= @ipaddress %>
 <%- else -%>
-<%- if is_master == true -%>
+<%- if @is_master_real == true -%>
 <% @unicast_real.unshift(@fqdn) %>
 discovery.zen.ping.unicast.hosts: <%= @unicast_real.to_json %>
 <%- else -%>

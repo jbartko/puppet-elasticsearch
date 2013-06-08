@@ -15,14 +15,14 @@
 # Pull in sysconfig settings
 [ -f /etc/sysconfig/elasticsearch ] && . /etc/sysconfig/elasticsearch
 
-ES_HOME=<%= @es_dir %>
-ES_USER=<%= @es_base %>
+ES_HOME=<%= @es_dir_real %>
+ES_USER=<%= @es_base_real %>
 
 DAEMON=${ES_HOME}/bin/elasticsearch
 NAME=elasticsearch
 PID_FILE=${PID_FILE:-/var/run/${NAME}/${NAME}.pid}
 LOCK_FILE=${LOCKFILE:-/var/lock/subsys/${NAME}}
-NFILES=${NFILES:-<%= @es_num_files %>}
+NFILES=${NFILES:-<%= @es_num_files_real %>}
 DELAY=20
 
 ES_PATH_LOG=${ES_PATH_LOG:-/var/log/${NAME}}

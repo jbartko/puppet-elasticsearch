@@ -17,7 +17,7 @@
 # Copyright 2013 John Bartko, for use by Texas State University-San Marcos
 #
 class elasticsearch::service {
-  service { $elasticsearch::es_base:
+  service { $elasticsearch::es_base_real:
     ensure     => running,
     enable     => true,
     hasrestart => true,

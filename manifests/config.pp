@@ -22,22 +22,6 @@ class elasticsearch::config {
     content => template('elasticsearch/elasticsearch.yml.erb'),
   }
 
-  file { "/etc/sysconfig/${elasticsearch::es_base_real}":
-    ensure  => file,
-    content => template('elasticsearch/sysconfig.erb'),
-  }
-
-  file { "/etc/init.d/${elasticsearch::es_base_real}":
-    ensure  => file,
-    mode    => '0755',
-    content => template('elasticsearch/init.erb'),
-  }
-
-  file { "/etc/security/limits.d/${elasticsearch::es_base_real}.conf":
-    ensure  => file,
-    content => template('elasticsearch/limits.conf.erb'),
-  }
-
   exec { 'Install bigdesk plugin':
     command  => "${elasticsearch::es_dir_real}/bin/plugin -install lukas-vlcek/bigdesk",
     creates  => "${elasticsearch::es_dir_real}/plugins/bigdesk",

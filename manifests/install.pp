@@ -83,6 +83,22 @@ class elasticsearch::install {
     unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch && /usr/local/elasticsearch/bin/elasticsearch -v | /bin/grep -q '${elasticsearch::es_version_real}'",
     require => [ Exec['download'], File[$sys_dirs], File["${elasticsearch::es_dir_real}/config"] ],
   }
+
+  file { "/etc/sysconfig/${elasticsearch::es_base_real}":
+    ensure  => file,
+    content => template('elasticsearch/sysconfig.erb'),
+  }
+
+  file { "/etc/init.d/${elasticsearch::es_base_real}":
+    ensure  => file,
+    mode    => '0755',
+    content => template('elasticsearch/init.erb'),
+  }
+
+  file { "/etc/security/limits.d/${elasticsearch::es_base_real}.conf":
+    ensure  => file,
+    content => template('elasticsearch/limits.conf.erb'),
+  }
 }
 
 # vim: set ts=2 sw=2 et ft=puppet:

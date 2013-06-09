@@ -12,8 +12,6 @@
 # [*es_dir_work*]
 # [*es_num_files*]
 # [*es_memlock*]
-# [*alloc_aware*]
-# [*datacenter*]
 # [*is_master*]
 # [*is_data*]
 # [*master_list*]

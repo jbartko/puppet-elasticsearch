@@ -36,7 +36,7 @@
 # [*alloc_aware*]
 #   Cluster routing allocation awarenes configuration.
 #
-# [*datacenter*]
+# [*attribute*]
 #   C.r.a attributes.
 #
 # [*is_master*]
@@ -68,7 +68,7 @@
 class elasticsearch(
   $unicast        = 'UNSET',
   $alloc_aware    = 'UNSET',
-  $datacenter     = 'UNSET',
+  $attribute      = 'UNSET',
   $es_dir         = 'UNSET',
   $es_dir_conf    = 'UNSET',
   $es_dir_data    = 'UNSET',
@@ -100,9 +100,9 @@ class elasticsearch(
     default => $alloc_aware,
   }
 
-  $datacenter_real = $datacenter ? {
+  $attribute_real = $attribute ? {
     'UNSET' => false,
-    default => $datacenter,
+    default => $attribute,
   }
 
   $java_package_real = $java_package ? {

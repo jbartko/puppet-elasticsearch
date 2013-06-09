@@ -9,10 +9,6 @@
 #   Java flavor.
 #   Default: java-1.6.0-openjdk
 #
-# [*es_base*]
-#   The basename - used for user and directory creation.
-#   Default: elasticsearch
-#
 # [*es_version*]
 #   Version of elasticsearch.
 #   Default: 0.20.1
@@ -72,7 +68,6 @@
 class elasticsearch(
   $unicast        = 'UNSET',
   $java_package   = 'UNSET',
-  $es_base        = 'UNSET',
   $es_version     = 'UNSET',
   $es_dir         = 'UNSET',
   $es_conf_dir    = 'UNSET',
@@ -103,11 +98,6 @@ class elasticsearch(
   $java_package_real = $java_package ? {
     'UNSET' => $::elasticsearch::params::java_package,
     default => $java_package,
-  }
-
-  $es_base_real = $es_base ? {
-    'UNSET' => $::elasticsearch::params::es_base,
-    default => $es_base,
   }
 
   $es_version_real = $es_version ? {

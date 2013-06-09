@@ -42,7 +42,7 @@ class elasticsearch::install {
     unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch && /usr/local/elasticsearch/bin/elasticsearch -v | /bin/grep -q '${elasticsearch::es_version_real}'",
   }
 
-  user { $elasticsearch::es_base_real:
+  user { 'elasticsearch':
     ensure => present,
     system => true,
     shell  => '/sbin/nologin',
@@ -54,8 +54,8 @@ class elasticsearch::install {
 
   file { $app_dirs:
     ensure  => directory,
-    owner   => $elasticsearch::es_base_real,
-    group   => $elasticsearch::es_base_real,
+    owner   => 'elasticsearch',
+    group   => 'elasticsearch',
   }
 
   file { "${elasticsearch::es_dir_real}/data":
@@ -84,18 +84,18 @@ class elasticsearch::install {
     require => [ Exec['download'], File[$sys_dirs], File["${elasticsearch::es_dir_real}/config"] ],
   }
 
-  file { "/etc/sysconfig/${elasticsearch::es_base_real}":
+  file { '/etc/sysconfig/elasticsearch':
     ensure  => file,
     content => template('elasticsearch/sysconfig.erb'),
   }
 
-  file { "/etc/init.d/${elasticsearch::es_base_real}":
+  file { '/etc/init.d/elasticsearch':
     ensure  => file,
     mode    => '0755',
     content => template('elasticsearch/init.erb'),
   }
 
-  file { "/etc/security/limits.d/${elasticsearch::es_base_real}.conf":
+  file { '/etc/security/limits.d/elasticsearch.conf':
     ensure  => file,
     content => template('elasticsearch/limits.conf.erb'),
   }

@@ -16,7 +16,7 @@
 [ -f /etc/sysconfig/elasticsearch ] && . /etc/sysconfig/elasticsearch
 
 ES_HOME=<%= @es_dir_real %>
-ES_USER=<%= @es_base_real %>
+ES_USER=elasticsearch
 
 DAEMON=${ES_HOME}/bin/elasticsearch
 NAME=elasticsearch

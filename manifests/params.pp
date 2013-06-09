@@ -7,7 +7,6 @@
 # TODO: redhatify parameters
 #
 # [*java_package*]
-# [*es_base*]
 # [*es_version*]
 # [*es_dir*]
 # [*es_log_dir*]
@@ -35,14 +34,13 @@
 #
 class elasticsearch::params {
   $java_package   = 'java-1.7.0-openjdk'
-  $es_base        = 'elasticsearch'
   $es_version     = '0.90.0'
-  $es_dir         = "/usr/local/${es_base}"
-  $es_conf_dir    = "/etc/${es_base}"
-  $es_log_dir     = "/var/log/${es_base}"
-  $es_data_dir    = "/var/lib/${es_base}"
-  $es_work_dir    = "/var/tmp/${es_base}"
-  $es_pid_dir     = "/var/run/${es_base}"
+  $es_dir         = '/usr/local/elasticsearch'
+  $es_conf_dir    = '/etc/elasticsearch'
+  $es_log_dir     = '/var/log/elasticsearch'
+  $es_data_dir    = '/var/lib/elasticsearch'
+  $es_work_dir    = '/var/tmp/elasticsearch'
+  $es_pid_dir     = '/var/run/elasticsearch'
   $es_plugins_dir = "${es_dir}/plugins"
   $es_num_files   = '32000'
   $es_memlock     = 'unlimited'

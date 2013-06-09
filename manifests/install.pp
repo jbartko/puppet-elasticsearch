@@ -55,7 +55,7 @@ class elasticsearch::install {
   file { $app_dirs:
     ensure  => directory,
     owner   => $elasticsearch::es_base_real,
-    group   => $elasticsearch::es_base_real
+    group   => $elasticsearch::es_base_real,
   }
 
   file { "${elasticsearch::es_dir_real}/data":

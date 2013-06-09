@@ -1,0 +1,5 @@
+fixtures:
+  repositories:
+    stdlib: 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
+
+# vim: set ts=2 sw=2 et ft=yaml:

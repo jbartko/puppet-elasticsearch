@@ -16,13 +16,13 @@
 # [*es_dir*]
 #   elasticsearch home.
 #
-# [*es_log_dir*]
+# [*es_dir_log*]
 #   elasticsearch logs
 #
-# [*es_run_dir*]
+# [*es_dir_run*]
 #   elasticsearch system
 #
-# [*es_work_dir*]
+# [*es_dir_work*]
 #   elasticsearch work
 #
 # [*es_num_files*]
@@ -67,32 +67,42 @@
 
 class elasticsearch(
   $unicast        = 'UNSET',
-  $java_package   = 'UNSET',
-  $es_version     = 'UNSET',
-  $es_dir         = 'UNSET',
-  $es_conf_dir    = 'UNSET',
-  $es_log_dir     = 'UNSET',
-  $es_run_dir     = 'UNSET',
-  $es_data_dir    = 'UNSET',
-  $es_work_dir    = 'UNSET',
-  $es_pid_dir     = 'UNSET',
-  $es_plugins_dir = 'UNSET',
-  $es_num_files   = 'UNSET',
-  $es_memlock     = 'UNSET',
-  $es_heap_size   = 'UNSET',
+  $alloc_aware    = 'UNSET',
   $datacenter     = 'UNSET',
-  $is_master      = 'UNSET',
+  $es_dir         = 'UNSET',
+  $es_dir_conf    = 'UNSET',
+  $es_dir_data    = 'UNSET',
+  $es_dir_log     = 'UNSET',
+  $es_dir_pid     = 'UNSET',
+  $es_dir_plugins = 'UNSET',
+  $es_dir_run     = 'UNSET',
+  $es_dir_work    = 'UNSET',
+  $es_heap_size   = 'UNSET',
+  $es_memlock     = 'UNSET',
+  $es_num_files   = 'UNSET',
+  $es_version     = 'UNSET',
   $is_data        = 'UNSET',
+  $is_master      = 'UNSET',
+  $java_package   = 'UNSET',
 ) {
   include elasticsearch::params
 
-  # TODO require puppetlabs-stdlib
   $unicast_real = $unicast ? {
     'UNSET' => false,
     default => $unicast,
   }
   if($unicast_real != false) {
     validate_array($unicast_real)
+  }
+
+  $alloc_aware_real = $alloc_aware ? {
+    'UNSET' => false,
+    default => $alloc_aware,
+  }
+
+  $datacenter_real = $datacenter ? {
+    'UNSET' => false,
+    default => $datacenter,
   }
 
   $java_package_real = $java_package ? {
@@ -110,39 +120,39 @@ class elasticsearch(
     default => $es_dir,
   }
 
-  $es_conf_dir_real = $es_conf_dir ? {
-    'UNSET' => $::elasticsearch::params::es_conf_dir,
-    default => $es_conf_dir,
+  $es_dir_conf_real = $es_dir_conf ? {
+    'UNSET' => $::elasticsearch::params::es_dir_conf,
+    default => $es_dir_conf,
   }
 
-  $es_log_dir_real = $es_log_dir ? {
-    'UNSET' => $::elasticsearch::params::es_log_dir,
-    default => $es_log_dir,
+  $es_dir_log_real = $es_dir_log ? {
+    'UNSET' => $::elasticsearch::params::es_dir_log,
+    default => $es_dir_log,
   }
 
-  $es_run_dir_real = $es_run_dir ? {
-    'UNSET' => $::elasticsearch::params::es_run_dir,
-    default => $es_run_dir,
+  $es_dir_run_real = $es_dir_run ? {
+    'UNSET' => $::elasticsearch::params::es_dir_run,
+    default => $es_dir_run,
   }
 
-  $es_data_dir_real = $es_data_dir ? {
-    'UNSET' => $::elasticsearch::params::es_data_dir,
-    default => $es_data_dir,
+  $es_dir_data_real = $es_dir_data ? {
+    'UNSET' => $::elasticsearch::params::es_dir_data,
+    default => $es_dir_data,
   }
 
-  $es_work_dir_real = $es_work_dir ? {
-    'UNSET' => $::elasticsearch::params::es_work_dir,
-    default => $es_work_dir,
+  $es_dir_work_real = $es_dir_work ? {
+    'UNSET' => $::elasticsearch::params::es_dir_work,
+    default => $es_dir_work,
   }
 
-  $es_pid_dir_real = $es_pid_dir ? {
-    'UNSET' => $::elasticsearch::params::es_pid_dir,
-    default => $es_pid_dir,
+  $es_dir_pid_real = $es_dir_pid ? {
+    'UNSET' => $::elasticsearch::params::es_dir_pid,
+    default => $es_dir_pid,
   }
 
-  $es_plugins_dir_real = $es_plugins_dir ? {
-    'UNSET' => $::elasticsearch::params::es_plugins_dir,
-    default => $es_plugins_dir,
+  $es_dir_plugins_real = $es_dir_plugins ? {
+    'UNSET' => $::elasticsearch::params::es_dir_plugins,
+    default => $es_dir_plugins,
   }
 
   $es_num_files_real = $es_num_files ? {
@@ -158,11 +168,6 @@ class elasticsearch(
   $es_heap_size_real = $es_heap_size ? {
     'UNSET'  => $::elasticsearch::params::es_heap_size,
     default => $es_heap_size,
-  }
-
-  $datacenter_real = $datacenter ? {
-    'UNSET' => $::elasticsearch::params::datacenter,
-    default => $datacenter,
   }
 
   $is_master_real = $is_master ? {

@@ -24,14 +24,14 @@ class elasticsearch::install {
   $tar_path = "/tmp/${tar}"
   $sys_dirs = [
     $elasticsearch::es_dir_real,
-    $elasticsearch::es_conf_dir_real,
-    $elasticsearch::es_plugins_dir_real
+    $elasticsearch::es_dir_conf_real,
+    $elasticsearch::es_dir_plugins_real
   ]
   $app_dirs = [
-    $elasticsearch::es_log_dir_real,
-    $elasticsearch::es_data_dir_real,
-    $elasticsearch::es_work_dir_real,
-    $elasticsearch::es_pid_dir_real
+    $elasticsearch::es_dir_log_real,
+    $elasticsearch::es_dir_data_real,
+    $elasticsearch::es_dir_work_real,
+    $elasticsearch::es_dir_pid_real
   ]
   $url = "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${elasticsearch::es_version_real}.tar.gz"
 
@@ -60,22 +60,22 @@ class elasticsearch::install {
 
   file { "${elasticsearch::es_dir_real}/data":
     ensure => link,
-    target => $elasticsearch::es_data_dir_real,
+    target => $elasticsearch::es_dir_data_real,
   }
 
   file { "${elasticsearch::es_dir_real}/work":
     ensure => link,
-    target => $elasticsearch::es_work_dir_real,
+    target => $elasticsearch::es_dir_work_real,
   }
 
   file { "${elasticsearch::es_dir_real}/logs":
     ensure => link,
-    target => $elasticsearch::es_log_dir_real,
+    target => $elasticsearch::es_dir_log_real,
   }
 
   file { "${elasticsearch::es_dir_real}/config":
     ensure => link,
-    target => $elasticsearch::es_conf_dir_real,
+    target => $elasticsearch::es_dir_conf_real,
   }
 
   exec { 'unpack':

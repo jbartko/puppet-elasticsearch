@@ -83,9 +83,9 @@ class elasticsearch::install {
   }
 
   exec { 'unpack':
-    command => "/bin/tar zxf ${tar_path} --overwrite --no-same-owner\
-      --no-same-permissions --strip-components=1\
-      -C ${elasticsearch::es_dir_real}",
+    command => "/bin/rm -rf ${elasticsearch::es_dir}/{bin,lib}/* &&\
+      /bin/tar zxf ${tar_path} --no-same-owner --no-same-permissions\
+      --strip-components=1 -C ${elasticsearch::es_dir_real}",
     unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch &&\
       /usr/local/elasticsearch/bin/elasticsearch -v |\
       /bin/grep -q '${elasticsearch::es_version_real}'",

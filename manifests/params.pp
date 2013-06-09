@@ -4,18 +4,14 @@
 #
 # === Parameters
 #
-# TODO: redhatify parameters
-#
 # [*java_package*]
 # [*es_version*]
 # [*es_dir*]
-# [*es_log_dir*]
-# [*es_run_dir*]
-# [*es_work_dir*]
+# [*es_dir_log*]
+# [*es_dir_run*]
+# [*es_dir_work*]
 # [*es_num_files*]
 # [*es_memlock*]
-# [*alloc_aware*]
-# [*datacenter*]
 # [*is_master*]
 # [*is_data*]
 # [*master_list*]
@@ -33,22 +29,20 @@
 # Copyright 2013 John Bartko, for use by Texas State University-San Marcos
 #
 class elasticsearch::params {
-  $java_package   = 'java-1.7.0-openjdk'
-  $es_version     = '0.90.0'
   $es_dir         = '/usr/local/elasticsearch'
-  $es_conf_dir    = '/etc/elasticsearch'
-  $es_log_dir     = '/var/log/elasticsearch'
-  $es_data_dir    = '/var/lib/elasticsearch'
-  $es_work_dir    = '/var/tmp/elasticsearch'
-  $es_pid_dir     = '/var/run/elasticsearch'
-  $es_plugins_dir = "${es_dir}/plugins"
-  $es_num_files   = '32000'
-  $es_memlock     = 'unlimited'
+  $es_dir_conf    = '/etc/elasticsearch'
+  $es_dir_data    = '/var/lib/elasticsearch'
+  $es_dir_log     = '/var/log/elasticsearch'
+  $es_dir_pid     = '/var/run/elasticsearch'
+  $es_dir_plugins = "${es_dir}/plugins"
+  $es_dir_work    = '/var/tmp/elasticsearch'
   $es_heap_size   = '512m'
-  $alloc_aware    = 'datacenter'
-  $datacenter     = 'jck'
-  $is_master      = true
+  $es_memlock     = 'unlimited'
+  $es_num_files   = '32768'
+  $es_version     = '0.90.1'
   $is_data        = true
+  $is_master      = true
+  $java_package   = 'java-1.7.0-openjdk'
 }
 
 # vim: set ts=2 sw=2 et ft=puppet:

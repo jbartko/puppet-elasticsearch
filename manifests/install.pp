@@ -20,26 +20,30 @@
 # Copyright 2013 John Bartko, for use by Texas State University-San Marcos
 #
 class elasticsearch::install {
-  $tar = "elasticsearch-${elasticsearch::es_version_real}.tar.gz"
-  $tar_path = "/tmp/${tar}"
-  $sys_dirs = [
-    $elasticsearch::es_dir_real,
-    $elasticsearch::es_conf_dir_real,
-    $elasticsearch::es_plugins_dir_real
-  ]
   $app_dirs = [
-    $elasticsearch::es_log_dir_real,
-    $elasticsearch::es_data_dir_real,
-    $elasticsearch::es_work_dir_real,
-    $elasticsearch::es_pid_dir_real
+    $elasticsearch::es_dir_data_real,
+    $elasticsearch::es_dir_log_real,
+    $elasticsearch::es_dir_pid_real,
+    $elasticsearch::es_dir_work_real
   ]
-  $url = "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${elasticsearch::es_version_real}.tar.gz"
+  $sys_dirs = [
+    $elasticsearch::es_dir_conf_real,
+    $elasticsearch::es_dir_plugins_real,
+    $elasticsearch::es_dir_real
+  ]
+  $dl_base_name = "elasticsearch-${elasticsearch::es_version_real}.tar.gz"
+  $dl_base_url =
+    'https://download.elasticsearch.org/elasticsearch/elasticsearch'
+  $tar_path = "/tmp/${dl_base_name}"
+  $dl_url = "${dl_base_url}/${dl_base_name}"
 
   exec { 'download':
     cwd     => '/tmp',
-    command => "/usr/bin/curl -O ${url}",
+    command => "/usr/bin/curl -O ${dl_url}",
     creates => $tar_path,
-    unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch && /usr/local/elasticsearch/bin/elasticsearch -v | /bin/grep -q '${elasticsearch::es_version_real}'",
+    unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch &&\
+      /usr/local/elasticsearch/bin/elasticsearch -v |\
+      /bin/grep -q '${elasticsearch::es_version_real}'",
   }
 
   user { 'elasticsearch':
@@ -60,28 +64,36 @@ class elasticsearch::install {
 
   file { "${elasticsearch::es_dir_real}/data":
     ensure => link,
-    target => $elasticsearch::es_data_dir_real,
+    target => $elasticsearch::es_dir_data_real,
   }
 
   file { "${elasticsearch::es_dir_real}/work":
     ensure => link,
-    target => $elasticsearch::es_work_dir_real,
+    target => $elasticsearch::es_dir_work_real,
   }
 
   file { "${elasticsearch::es_dir_real}/logs":
     ensure => link,
-    target => $elasticsearch::es_log_dir_real,
+    target => $elasticsearch::es_dir_log_real,
   }
 
   file { "${elasticsearch::es_dir_real}/config":
     ensure => link,
-    target => $elasticsearch::es_conf_dir_real,
+    target => $elasticsearch::es_dir_conf_real,
   }
 
   exec { 'unpack':
-    command => "/bin/tar zxf ${tar_path} --overwrite --no-same-owner --no-same-permissions --strip-components=1 -C ${elasticsearch::es_dir_real}",
-    unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch && /usr/local/elasticsearch/bin/elasticsearch -v | /bin/grep -q '${elasticsearch::es_version_real}'",
-    require => [ Exec['download'], File[$sys_dirs], File["${elasticsearch::es_dir_real}/config"] ],
+    command => "/bin/rm -rf ${elasticsearch::es_dir}/{bin,lib}/* &&\
+      /bin/tar zxf ${tar_path} --no-same-owner --no-same-permissions\
+      --strip-components=1 -C ${elasticsearch::es_dir_real}",
+    unless  => "/usr/bin/test -x /usr/local/elasticsearch/bin/elasticsearch &&\
+      /usr/local/elasticsearch/bin/elasticsearch -v |\
+      /bin/grep -q '${elasticsearch::es_version_real}'",
+    require => [
+      Exec['download'],
+      File[$sys_dirs],
+      File["${elasticsearch::es_dir_real}/config"]
+    ],
   }
 
   file { '/etc/sysconfig/elasticsearch':

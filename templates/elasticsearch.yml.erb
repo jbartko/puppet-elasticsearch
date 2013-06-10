@@ -82,6 +82,12 @@ node.name: <%= @fqdn %>
 # is a simple key value pair, similar to node.key: value, here is an example:
 #
 # node.rack: rack314
+<% if @alloc_aware_real != false -%>
+<% if @is_master_real == true -%>
+cluster.routing.allocation.awareness.attributes: <%= @alloc_aware_real %>
+<% end -%>
+node.<%= @alloc_aware_real -%>: <%= @attribute_real %>
+<% end -%>
 
 # By default, multiple nodes are allowed to start from the same installation location
 # to disable it, set the following:

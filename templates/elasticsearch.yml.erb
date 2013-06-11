@@ -82,11 +82,11 @@ node.name: <%= @fqdn %>
 # is a simple key value pair, similar to node.key: value, here is an example:
 #
 # node.rack: rack314
-<% if @alloc_aware_real != false -%>
+<% if @cra_key_real != false -%>
 <% if @is_master_real == true -%>
-cluster.routing.allocation.awareness.attributes: <%= @alloc_aware_real %>
+cluster.routing.allocation.awareness.attributes: <%= @cra_key_real %>
 <% end -%>
-node.<%= @alloc_aware_real -%>: <%= @attribute_real %>
+node.<%= @cra_key_real -%>: <%= @cra_value_real %>
 <% end -%>
 
 # By default, multiple nodes are allowed to start from the same installation location

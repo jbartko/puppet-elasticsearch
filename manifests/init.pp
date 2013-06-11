@@ -33,7 +33,7 @@
 #   Amount of memory available to allocate to java.
 #   Default: unlimited
 #
-# [*alloc_aware*]
+# [*cra_key*]
 #   Cluster routing allocation awarenes configuration.
 #
 # [*attribute*]
@@ -67,8 +67,8 @@
 
 class elasticsearch(
   $unicast        = 'UNSET',
-  $alloc_aware    = 'UNSET',
-  $attribute      = 'UNSET',
+  $cra_key        = 'UNSET',
+  $cra_value      = 'UNSET',
   $es_dir         = 'UNSET',
   $es_dir_conf    = 'UNSET',
   $es_dir_data    = 'UNSET',
@@ -95,14 +95,20 @@ class elasticsearch(
     validate_array($unicast_real)
   }
 
-  $alloc_aware_real = $alloc_aware ? {
-    'UNSET' => false,
-    default => $alloc_aware,
+  if $cra_key != 'UNSET' {
+    if $cra_value == 'UNSET' {
+      warning('cra_value unset while cra_key is defined')
+    }
   }
 
-  $attribute_real = $attribute ? {
+  $cra_key_real = $cra_key ? {
     'UNSET' => false,
-    default => $attribute,
+    default => $cra_key,
+  }
+
+  $cra_value_real = $cra_value ? {
+    'UNSET' => false,
+    default => $cra_value,
   }
 
   $java_package_real = $java_package ? {

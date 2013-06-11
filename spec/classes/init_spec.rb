@@ -13,8 +13,7 @@ describe 'elasticsearch', :type => :class do
     let(:params) { {
       :unicast => [ 'host0.example.com', 'host1.example.com' ],
       :java_package => 'java-1.7.0-oracle',
-      :es_work_dir  => '/tmp',
-      :datacenter   => 'siteA'
+      :es_dir_work  => '/tmp',
     } }
     it 'parameterized' do
       should contain_class('elasticsearch::install')
@@ -26,8 +25,7 @@ describe 'elasticsearch', :type => :class do
     let(:params) { {
       :unicast      => 'host0.example.com',
       :java_package => 'java-1.7.0-oracle',
-      :es_work_dir  => '/tmp',
-      :datacenter   => 'siteA'
+      :es_dir_work  => '/tmp',
     } }
     it do
       expect {

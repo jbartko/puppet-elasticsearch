@@ -69,6 +69,7 @@ class elasticsearch(
   $unicast        = 'UNSET',
   $cra_key        = 'UNSET',
   $cra_value      = 'UNSET',
+  $es_clus_name   = 'UNSET',
   $es_dir         = 'UNSET',
   $es_dir_conf    = 'UNSET',
   $es_dir_data    = 'UNSET',
@@ -120,6 +121,12 @@ class elasticsearch(
     'UNSET' => $::elasticsearch::params::es_version,
     default => $es_version,
   }
+
+  $es_clus_name_real = $es_clus_name ? {
+    'UNSET' => $::elasticsearch::params::es_clus_name,
+    default => $es_clus_name,
+  }
+  validate_string($es_clus_name_real)
 
   $es_dir_real = $es_dir ? {
     'UNSET' => $::elasticsearch::params::es_dir,

@@ -29,6 +29,7 @@
 # Copyright 2013 John Bartko, for use by Texas State University-San Marcos
 #
 class elasticsearch::params {
+  $es_clus_name   = 'elasticsearch'
   $es_dir         = '/usr/local/elasticsearch'
   $es_dir_conf    = '/etc/elasticsearch'
   $es_dir_data    = '/var/lib/elasticsearch'

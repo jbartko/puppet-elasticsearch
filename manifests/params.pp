@@ -40,10 +40,10 @@ class elasticsearch::params {
   $es_heap_size   = '512m'
   $es_memlock     = 'unlimited'
   $es_num_files   = '32768'
-  $es_version     = '0.90.1'
+  $es_version     = '0.90.3'
   $is_data        = true
   $is_master      = true
-  $java_package   = 'java-1.7.0-openjdk'
+  $java_package   = 'java-1.6.0-openjdk'
 }
 
 # vim: set ts=2 sw=2 et ft=puppet:

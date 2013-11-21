@@ -53,11 +53,11 @@ class elasticsearch::install {
   }
 
   file { $sys_dirs:
-    ensure => directory,
+    ensure => present,
   }
 
   file { $app_dirs:
-    ensure  => directory,
+    ensure  => present,
     owner   => 'elasticsearch',
     group   => 'elasticsearch',
   }
